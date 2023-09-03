@@ -1,0 +1,4 @@
+#Create a Flask Route to Serve the Camera Page
+@app.route('/camera')
+def camera():
+    return render_template('camera.html')
