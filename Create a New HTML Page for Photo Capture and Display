@@ -1,0 +1,50 @@
+#Create a New HTML Page for Photo Capture and Display
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+</head>
+<body>
+    <h1>Camera Capture</h1>
+    <video id="camera-feed" autoplay></video>
+    <button id="capture-button">Capture Photo</button>
+    <canvas id="photo-canvas"></canvas>
+    <button id="upload-button">Upload Photo</button>
+    <img id="captured-photo" style="display:none;" src="" alt="Captured Photo">
+    <script>
+        const video = document.getElementById('camera-feed');
+        const captureButton = document.getElementById('capture-button');
+        const photoCanvas = document.getElementById('photo-canvas');
+        const uploadButton = document.getElementById('upload-button');
+        const capturedPhoto = document.getElementById('captured-photo');
+
+        // Get user media and display the camera feed
+        navigator.mediaDevices
+            .getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing camera:', error);
+            });
+
+        // Capture a photo from the camera feed
+        captureButton.addEventListener('click', () => {
+            const context = photoCanvas.getContext('2d');
+            photoCanvas.width = video.videoWidth;
+            photoCanvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
+            capturedPhoto.src = photoCanvas.toDataURL('image/jpeg');
+            capturedPhoto.style.display = 'block';
+        });
+
+        // Upload the captured photo
+        uploadButton.addEventListener('click', () => {
+            // Implement the photo upload logic using JavaScript fetch or a library like Axios
+            // Send the captured photo to your Flask API for processing
+        });
+    </script>
+</body>
+</html>
